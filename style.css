@@ -22,16 +22,15 @@ h1 {
 /* Layout Styles */
 #layout {
   display: grid;
-  grid-template-columns: 1.5fr auto 1fr; /* Adjusted for larger left side */
-  gap: 20px;
+  grid-template-columns: 1.5fr auto 1fr; 
   width: 100%;
   max-width: 1200px;
 }
 
 /* Instructions */
 #instructions {
-  text-align: left; /* Align instructions to the left */
-  padding: 20px; /* Increased padding for better readability */
+  text-align: left; 
+  padding: 20px; 
   background-color: #e3f2fd;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -43,13 +42,13 @@ h1 {
 
 #instructions ul {
   list-style-type: disc;
-  padding-left: 30px; /* More space for bullet alignment */
-  font-size: 16px; /* Slightly larger font */
-  line-height: 1.5; /* Increased line height for readability */
+  padding-left: 30px; 
+  font-size: 16px; 
+  line-height: 1.5;
 }
 
 #instructions ul li {
-  margin-bottom: 20px; /* More spacing between list items */
+  margin-bottom: 20px;
 }
 
 /* Menu Styles */
@@ -94,7 +93,7 @@ button {
 
 button#back-btn {
   background-color: #007bff;
-  margin-bottom: 100px; /* Adds a gap below the button */
+  margin-bottom: 100px; 
 }
 
 button#run-btn {
@@ -119,7 +118,7 @@ canvas {
 
 /* Menu Info Box */
 #menuinfo {
-  margin-top: 30px; /* Adds a gap between menu and menu info box */
+  margin-top: 30px; 
   padding: 20px;
   background-color: #e3f2fd;
   border-radius: 10px;

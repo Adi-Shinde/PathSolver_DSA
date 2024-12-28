@@ -25,7 +25,7 @@ let grid = [];
 let start = null;
 let end = null;
 let running = false;
-let speed = 1; // Animation speed (default)
+let speed = 1; 
 
 // Update speed display
 function updateSpeedDisplay() {
