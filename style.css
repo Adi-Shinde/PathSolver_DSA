@@ -1,0 +1,179 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#speed-value {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px 0;
+}
+
+h1 {
+  margin: 20px 0;
+  font-size: 28px;
+  text-align: center;
+}
+
+/* Layout Styles */
+#layout {
+  display: grid;
+  grid-template-columns: 1.5fr auto 1fr; /* Adjusted for larger left side */
+  gap: 20px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Instructions */
+#instructions {
+  text-align: left; /* Align instructions to the left */
+  padding: 20px; /* Increased padding for better readability */
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#instructions h2 {
+  margin-bottom: 20px;
+}
+
+#instructions ul {
+  list-style-type: disc;
+  padding-left: 30px; /* More space for bullet alignment */
+  font-size: 16px; /* Slightly larger font */
+  line-height: 1.5; /* Increased line height for readability */
+}
+
+#instructions ul li {
+  margin-bottom: 20px; /* More spacing between list items */
+}
+
+/* Menu Styles */
+#menu {
+  text-align: center;
+}
+
+.menu-btn {
+  padding: 10px 20px;
+  margin: 10px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+}
+
+#controls {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+/* Buttons Section */
+#buttons {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+button#back-btn {
+  background-color: #007bff;
+  margin-bottom: 100px; /* Adds a gap below the button */
+}
+
+button#run-btn {
+  background-color: #4caf50;
+}
+
+button#reset-btn {
+  background-color: #f44336;
+}
+
+button#slow-down-btn,
+button#speed-up-btn {
+  background-color: #ff9800;
+}
+
+/* Canvas (Grid) */
+canvas {
+  border: 1px solid #ddd;
+  display: block;
+  margin: auto;
+}
+
+/* Menu Info Box */
+#menuinfo {
+  margin-top: 30px; /* Adds a gap between menu and menu info box */
+  padding: 20px;
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+#menuinfo p {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#social-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.social-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+}
+/* Menu Info Box (Bottom Right) */
+#menuinfo {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px;
+  background-color: #e3f2fd;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 150px;
+  max-width: 200px;
+}
+
+#menuinfo p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#social-links {
+  display: flex;
+  justify-content: space-around;
+}
+
+.social-logo {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  cursor: pointer;
+}

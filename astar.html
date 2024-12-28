@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A* Pathfinding Algorithm</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1 id="title">A* Pathfinding Algorithm</h1>
+
+  <div id="layout">
+    <!-- Instructions -->
+    <div id="instructions">
+      <h2>Instructions</h2>
+      <ul>
+        <li>First two squares are the start and end points.</li>
+        <li>Left-click and drag to create walls.</li>
+        <li>Right-click and drag to delete walls.</li>
+        <li>Click "Run" to find the path.</li>
+        <li>Click "Reset" to clear the grid.</li>
+        <li>Use "Slow Down" and "Speed Up" to adjust animation speed.</li>
+      </ul>
+    </div>
+
+    <!-- Grid Canvas -->
+    <canvas id="gridCanvas"></canvas>
+
+    <!-- Buttons -->
+    <div id="buttons">
+      <button id="back-btn">Back to Main Menu</button>
+      <button id="run-btn">Run</button>
+      <button id="reset-btn">Reset</button>
+      <button id="slow-down-btn">Slow Down</button>
+      <span id="speed-value">1x</span>
+      <button id="speed-up-btn">Speed Up</button>
+    </div>
+  </div>
+
+  <div id="menuinfo">
+    <p>Aditya Shinde</p>
+    <div id="social-links">
+      <a href="https://www.linkedin.com/in/adityashinde" target="_blank">
+        <img src="logos/linkedin.png" class="social-logo" alt="LinkedIn">
+      </a>
+      <a href="https://github.com/adityashinde" target="_blank">
+        <img src="logos/github.png" class="social-logo" alt="GitHub">
+      </a>
+      <a href="https://instagram.com/adityashinde" target="_blank">
+        <img src="logos/instagram.png" class="social-logo" alt="Instagram">
+      </a>
+    </div>
+  </div>
+  
+  <script src="scripts/astar.js"></script>
+</body>
+</html>
