@@ -25,7 +25,7 @@ let grid = [];
 let start = null;
 let end = null;
 let running = false;
-let speed = 1; 
+let speed = 1;
 
 // Update speed display
 function updateSpeedDisplay() {
@@ -90,36 +90,19 @@ function updateNeighbors() {
   }
 }
 
-// Heuristic function (Manhattan distance)
-function heuristic(a, b) {
-  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
-
-// A* Algorithm
-async function aStar() {
+// BFS Algorithm
+async function bfs() {
   if (!start || !end) return;
 
-  const openSet = [start];
+  const queue = [start];
+  const visited = new Set();
+  visited.add(start);
   const cameFrom = new Map();
-  const gScore = new Map();
-  const fScore = new Map();
 
-  for (let row of grid) {
-    for (let cell of row) {
-      gScore.set(cell, Infinity);
-      fScore.set(cell, Infinity);
-    }
-  }
-
-  gScore.set(start, 0);
-  fScore.set(start, heuristic(start, end));
-
-  while (openSet.length > 0) {
+  while (queue.length > 0) {
     if (!running) return;
 
-    // Sort by fScore
-    openSet.sort((a, b) => fScore.get(a) - fScore.get(b));
-    const current = openSet.shift();
+    const current = queue.shift();
 
     if (current === end) {
       reconstructPath(cameFrom, current);
@@ -127,24 +110,18 @@ async function aStar() {
     }
 
     for (let neighbor of current.neighbors) {
-      const tempGScore = gScore.get(current) + 1;
-
-      if (tempGScore < gScore.get(neighbor)) {
+      if (!visited.has(neighbor)) {
+        queue.push(neighbor);
+        visited.add(neighbor);
         cameFrom.set(neighbor, current);
-        gScore.set(neighbor, tempGScore);
-        fScore.set(neighbor, tempGScore + heuristic(neighbor, end));
-
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-          neighbor.color = COLORS.green;
-        }
+        neighbor.color = COLORS.green;
       }
     }
 
     if (current !== start) current.color = COLORS.red;
 
     drawGrid();
-    await new Promise(r => setTimeout(r, 50 / speed)); // Delay for animation
+    await new Promise((r) => setTimeout(r, 50 / speed)); // Delay for animation
   }
 }
 
@@ -197,7 +174,7 @@ document.getElementById('run-btn').addEventListener('click', () => {
   if (running) return;
   running = true;
   updateNeighbors();
-  aStar();
+  bfs();
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
@@ -221,6 +198,7 @@ document.getElementById('slow-down-btn').addEventListener('click', () => {
     updateSpeedDisplay();
   }
 });
+
 document.getElementById('back-btn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });

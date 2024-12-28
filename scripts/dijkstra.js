@@ -25,7 +25,7 @@ let grid = [];
 let start = null;
 let end = null;
 let running = false;
-let speed = 1; 
+let speed = 1;
 
 // Update speed display
 function updateSpeedDisplay() {
@@ -42,6 +42,7 @@ function createGrid() {
         row,
         col,
         color: COLORS.white,
+        distance: Infinity,
         neighbors: [],
       });
     }
@@ -52,7 +53,6 @@ function createGrid() {
 function drawGrid() {
   ctx.clearRect(0, 0, WIDTH, WIDTH);
 
-  // Draw cells
   for (let row of grid) {
     for (let cell of row) {
       ctx.fillStyle = cell.color;
@@ -60,7 +60,6 @@ function drawGrid() {
     }
   }
 
-  // Draw grid lines
   ctx.strokeStyle = COLORS.grey;
   for (let i = 0; i <= ROWS; i++) {
     ctx.beginPath();
@@ -75,7 +74,7 @@ function drawGrid() {
   }
 }
 
-// Update neighbors for all cells
+// Update neighbors for each cell
 function updateNeighbors() {
   for (let row of grid) {
     for (let cell of row) {
@@ -90,74 +89,55 @@ function updateNeighbors() {
   }
 }
 
-// Heuristic function (Manhattan distance)
-function heuristic(a, b) {
-  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
-
-// A* Algorithm
-async function aStar() {
+// Dijkstra's Algorithm
+async function dijkstra() {
   if (!start || !end) return;
 
-  const openSet = [start];
-  const cameFrom = new Map();
-  const gScore = new Map();
-  const fScore = new Map();
-
+  const unvisited = [];
+  start.distance = 0;
   for (let row of grid) {
     for (let cell of row) {
-      gScore.set(cell, Infinity);
-      fScore.set(cell, Infinity);
+      unvisited.push(cell);
     }
   }
 
-  gScore.set(start, 0);
-  fScore.set(start, heuristic(start, end));
-
-  while (openSet.length > 0) {
+  while (unvisited.length > 0) {
     if (!running) return;
 
-    // Sort by fScore
-    openSet.sort((a, b) => fScore.get(a) - fScore.get(b));
-    const current = openSet.shift();
+    // Sort unvisited by distance
+    unvisited.sort((a, b) => a.distance - b.distance);
+    const current = unvisited.shift();
 
     if (current === end) {
-      reconstructPath(cameFrom, current);
+      reconstructPath(current);
       return;
     }
 
     for (let neighbor of current.neighbors) {
-      const tempGScore = gScore.get(current) + 1;
-
-      if (tempGScore < gScore.get(neighbor)) {
-        cameFrom.set(neighbor, current);
-        gScore.set(neighbor, tempGScore);
-        fScore.set(neighbor, tempGScore + heuristic(neighbor, end));
-
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-          neighbor.color = COLORS.green;
-        }
+      const tempDist = current.distance + 1;
+      if (tempDist < neighbor.distance) {
+        neighbor.distance = tempDist;
+        neighbor.previous = current;
+        if (neighbor !== start && neighbor !== end) neighbor.color = COLORS.green;
       }
     }
 
     if (current !== start) current.color = COLORS.red;
-
     drawGrid();
     await new Promise(r => setTimeout(r, 50 / speed)); // Delay for animation
   }
 }
 
 // Reconstruct path
-function reconstructPath(cameFrom, current) {
-  while (cameFrom.has(current)) {
-    current = cameFrom.get(current);
+function reconstructPath(current) {
+  while (current.previous) {
+    current = current.previous;
     if (current !== start) current.color = COLORS.purple;
     drawGrid();
   }
 }
 
-// Handle mouse events
+// Event Listeners
 canvas.addEventListener('mousedown', (e) => {
   const x = Math.floor(e.offsetX / CELL_SIZE);
   const y = Math.floor(e.offsetY / CELL_SIZE);
@@ -192,12 +172,12 @@ canvas.addEventListener('mousemove', (e) => {
   }
 });
 
-// Handle buttons
+// Button Handlers
 document.getElementById('run-btn').addEventListener('click', () => {
   if (running) return;
   running = true;
   updateNeighbors();
-  aStar();
+  dijkstra();
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
@@ -221,11 +201,12 @@ document.getElementById('slow-down-btn').addEventListener('click', () => {
     updateSpeedDisplay();
   }
 });
+
 document.getElementById('back-btn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
 
-// Initialize grid and speed display
+// Initialize grid
 createGrid();
 drawGrid();
 updateSpeedDisplay();

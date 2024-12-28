@@ -25,7 +25,7 @@ let grid = [];
 let start = null;
 let end = null;
 let running = false;
-let speed = 1; 
+let speed = 1;
 
 // Update speed display
 function updateSpeedDisplay() {
@@ -90,74 +90,49 @@ function updateNeighbors() {
   }
 }
 
-// Heuristic function (Manhattan distance)
-function heuristic(a, b) {
-  return Math.abs(a.row - b.row) + Math.abs(a.col - b.col);
-}
-
-// A* Algorithm
-async function aStar() {
+// DFS Algorithm
+async function dfs() {
   if (!start || !end) return;
 
-  const openSet = [start];
-  const cameFrom = new Map();
-  const gScore = new Map();
-  const fScore = new Map();
+  const stack = [start];
+  const visited = new Set();
 
-  for (let row of grid) {
-    for (let cell of row) {
-      gScore.set(cell, Infinity);
-      fScore.set(cell, Infinity);
-    }
-  }
-
-  gScore.set(start, 0);
-  fScore.set(start, heuristic(start, end));
-
-  while (openSet.length > 0) {
+  while (stack.length > 0) {
     if (!running) return;
 
-    // Sort by fScore
-    openSet.sort((a, b) => fScore.get(a) - fScore.get(b));
-    const current = openSet.shift();
+    const current = stack.pop();
 
     if (current === end) {
-      reconstructPath(cameFrom, current);
+      reconstructPath(current);
       return;
     }
 
+    visited.add(current);
     for (let neighbor of current.neighbors) {
-      const tempGScore = gScore.get(current) + 1;
-
-      if (tempGScore < gScore.get(neighbor)) {
-        cameFrom.set(neighbor, current);
-        gScore.set(neighbor, tempGScore);
-        fScore.set(neighbor, tempGScore + heuristic(neighbor, end));
-
-        if (!openSet.includes(neighbor)) {
-          openSet.push(neighbor);
-          neighbor.color = COLORS.green;
-        }
+      if (!visited.has(neighbor) && neighbor.color !== COLORS.black) {
+        stack.push(neighbor);
+        neighbor.parent = current;
+        neighbor.color = COLORS.green;
       }
     }
 
     if (current !== start) current.color = COLORS.red;
 
     drawGrid();
-    await new Promise(r => setTimeout(r, 50 / speed)); // Delay for animation
+    await new Promise((resolve) => setTimeout(resolve, 50 / speed)); // Animation delay
   }
 }
 
 // Reconstruct path
-function reconstructPath(cameFrom, current) {
-  while (cameFrom.has(current)) {
-    current = cameFrom.get(current);
+function reconstructPath(current) {
+  while (current.parent) {
+    current = current.parent;
     if (current !== start) current.color = COLORS.purple;
     drawGrid();
   }
 }
 
-// Handle mouse events
+// Event listeners
 canvas.addEventListener('mousedown', (e) => {
   const x = Math.floor(e.offsetX / CELL_SIZE);
   const y = Math.floor(e.offsetY / CELL_SIZE);
@@ -192,12 +167,12 @@ canvas.addEventListener('mousemove', (e) => {
   }
 });
 
-// Handle buttons
+// Button handlers
 document.getElementById('run-btn').addEventListener('click', () => {
   if (running) return;
   running = true;
   updateNeighbors();
-  aStar();
+  dfs();
 });
 
 document.getElementById('reset-btn').addEventListener('click', () => {
@@ -221,6 +196,7 @@ document.getElementById('slow-down-btn').addEventListener('click', () => {
     updateSpeedDisplay();
   }
 });
+
 document.getElementById('back-btn').addEventListener('click', () => {
   window.location.href = 'index.html';
 });
